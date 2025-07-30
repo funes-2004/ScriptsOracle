@@ -115,3 +115,110 @@ FROM student
 GROUP BY year_in_school
 ORDER BY year_in_school;
 
+SELECT AVG(height) AS altura_promedio
+FROM student;
+
+SELECT AVG(height) AS altura_promedio
+FROM student
+WHERE year_in_school = 10;
+
+SELECT AVG(height) AS altura_promedio
+FROM student
+WHERE year_in_school = 11;
+
+SELECT AVG(height) AS altura_promedio
+FROM student
+WHERE year_in_school = 12;
+
+SELECT year_in_school, last_name, SUM(height) AS suma_alturas
+FROM student
+WHERE year_in_school < 12
+GROUP BY ROLLUP (year_in_school, last_name);
+
+SELECT year_in_school, last_name, SUM(height) AS suma_alturas
+FROM student
+WHERE year_in_school < 12
+GROUP BY (year_in_school, last_name);
+
+SELECT year_in_school, last_name, SUM(height) AS suma_alturas
+FROM student
+WHERE year_in_school < 12
+GROUP BY CUBE (year_in_school, last_name);
+
+SELECT year_in_school, last_name, first_name, SUM(height) AS suma_alturas
+FROM student
+WHERE year_in_school < 12
+GROUP BY GROUPING SETS ((last_name, first_name),(year_in_school, last_name),(year_in_school, first_name));
+
+SELECT year_in_school, last_name, SUM(height) AS suma_alturas,
+       GROUPING(year_in_school) AS "Año subtotal",
+       GROUPING(last_name) AS "Apellido subtotal"
+FROM student
+WHERE year_in_school < 12
+GROUP BY CUBE (year_in_school, last_name);
+
+-- 1. Eliminar si existen
+DROP TABLE IF EXISTS tabla_a;
+DROP TABLE IF EXISTS tabla_b;
+DROP TABLE IF EXISTS job_history;
+
+-- 2. Crear tabla A
+CREATE TABLE tabla_a (
+    a_id INT
+);
+
+-- 3. Crear tabla B
+CREATE TABLE tabla_b (
+    b_id INT
+);
+
+-- 4. Insertar datos de ejemplo
+INSERT INTO tabla_a (a_id) VALUES
+(1),(2),(3),(4),(5);
+
+INSERT INTO tabla_b (b_id) VALUES
+(4),(5),(6),(7),(8);
+
+-- 5. Crear tabla job_history (simplificada)
+CREATE TABLE job_history (
+    employee_id INT,
+    job_id VARCHAR(20),
+    start_date DATE,
+    end_date DATE,
+    department_id INT
+);
+
+INSERT INTO job_history (employee_id, job_id, start_date, end_date, department_id) VALUES
+(101, 'AC_ACCOUNT', '2020-01-01', '2021-01-01', 10),
+(102, 'AD_VP', '2021-02-01', '2022-02-01', 20),
+(103, 'IT_PROG', '2020-06-15', '2021-06-15', 30);
+
+SELECT a_id AS id FROM tabla_a
+UNION
+SELECT b_id FROM tabla_b;
+
+SELECT a_id AS id FROM tabla_a
+UNION ALL
+SELECT b_id FROM tabla_b;
+
+SELECT a_id AS id FROM tabla_a
+INTERSECT
+SELECT b_id FROM tabla_b;
+
+-- A - B
+SELECT a_id AS id FROM tabla_a
+EXCEPT
+SELECT b_id FROM tabla_b;
+
+-- B - A
+SELECT b_id AS id FROM tabla_b
+EXCEPT
+SELECT a_id FROM tabla_a;
+
+SELECT NULL::DATE AS hire_date, employee_id, job_id
+FROM job_history
+UNION
+SELECT CURRENT_DATE AS hire_date, employee_id, job_id
+FROM job_history
+ORDER BY employee_id;
+
