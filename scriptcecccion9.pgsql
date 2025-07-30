@@ -54,5 +54,5 @@ GROUP BY year_in_school
 ORDER BY year_in_school;
 
 
-
+SELECT 3 FROM student
 
