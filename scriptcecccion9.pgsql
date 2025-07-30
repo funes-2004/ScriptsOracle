@@ -53,6 +53,65 @@ FROM student
 GROUP BY year_in_school
 ORDER BY year_in_school;
 
+SELECT year_in_school, last_name, COUNT(*) AS total_alumnos
+FROM student
+WHERE year_in_school > 10
+GROUP BY year_in_school, last_name
+ORDER BY year_in_school, last_name;
 
-SELECT 3 FROM student
+SELECT MAX(promedio_altura) AS altura_media_mas_alta
+FROM (
+    SELECT AVG(height) AS promedio_altura
+    FROM student
+    GROUP BY year_in_school
+) AS subconsulta;
+
+SELECT year_in_school, MAX(height) AS altura_maxima
+FROM student
+GROUP BY year_in_school
+HAVING COUNT(*) > 1
+ORDER BY year_in_school;
+
+SELECT year_in_school, ROUND(AVG(height), 2) AS promedio_altura
+FROM student
+GROUP BY year_in_school
+HAVING MIN(height) > 1.65
+ORDER BY year_in_school;
+
+SELECT year_in_school, MAX(height) AS altura_maxima
+FROM student
+GROUP BY year_in_school
+ORDER BY year_in_school;
+
+SELECT year_in_school, last_name, AVG(height) AS promedio_altura
+FROM student
+GROUP BY year_in_school, last_name
+ORDER BY year_in_school, last_name;
+
+SELECT COUNT(first_name) AS total_alumnos, year_in_school
+FROM student
+GROUP BY year_in_school
+ORDER BY year_in_school;
+
+SELECT COUNT(*) AS total_registros, year_in_school
+FROM student
+GROUP BY year_in_school
+ORDER BY year_in_school;
+
+
+SELECT year_in_school, MAX(height) AS altura_maxima
+FROM student
+WHERE last_name != 'Pérez'
+GROUP BY year_in_school
+ORDER BY year_in_school;
+
+SELECT year_in_school, ROUND(AVG(height), 2) AS altura_promedio
+FROM student
+GROUP BY year_in_school
+ORDER BY year_in_school;
+
+SELECT year_in_school, COUNT(DISTINCT last_name) AS apellidos_distintos
+FROM student
+GROUP BY year_in_school
+ORDER BY year_in_school;
 
